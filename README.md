@@ -57,7 +57,37 @@ npm install
 npm run dev      # start the dev server
 npm run build    # production build into dist/
 npm run preview  # preview the production build
+npm run lint     # run ESLint
 ```
+
+## Project structure
+
+The app is split into focused modules so each concern can be edited in
+isolation:
+
+```
+src/
+  main.jsx             # React entry point
+  App.jsx              # root: layout, tabs, shared XP/lab/exam state
+  theme.js             # Tokyo-Night colour palette (C, DOMAIN_COLORS)
+  utils.js             # clampPct, formatClock, sameSet, pad2
+  levels.js            # XP level table + levelFor()
+  data/
+    domains.js         # STUDY content (six domains)
+    labs.js            # 18 guided labs
+    questions.js       # 100-question exam bank
+  components/
+    Panel.jsx, TermBar.jsx, SectionHeader.jsx, Block.jsx   # shared UI
+    StudyMode.jsx      # [STUDY] tab
+    LabsMode.jsx       # [LABS] tab
+    ExamMode.jsx       # [EXAM] tab (engine + question types)
+    ExamResult.jsx     # exam score report (lazy-loaded — pulls in Recharts)
+    StatsMode.jsx      # [STATS] tab (lazy-loaded — pulls in Recharts)
+```
+
+`ExamResult` and `StatsMode` are loaded with `React.lazy`, so the Recharts
+charting library is fetched only when a score report or the stats dashboard is
+opened — keeping the initial bundle small.
 
 ## Notes
 - React + Vite. Charts via **Recharts**, icons via **lucide-react**.
